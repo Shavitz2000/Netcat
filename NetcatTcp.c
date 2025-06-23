@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+#define BUFFER_SIZE 2048
+
 void server(int port)
 {
     int fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,7 +34,7 @@ void server(int port)
         exit(1);
     }
 
-    printf("Listening on port %d...\n", port);
+    printf("Listening on port %d\n", port);
     int client_fd = accept(fd, NULL, NULL);
     if (client_fd < 0)
     {
@@ -41,7 +43,7 @@ void server(int port)
         exit(1);
     }
 
-    char buf[1024];
+    char buf[BUFFER_SIZE];
     while (1)
     {
         ssize_t n = read(client_fd, buf, sizeof(buf));
@@ -90,7 +92,7 @@ void client(const char *ip, int port)
     const char *msg = "Hello!\n";
     write(fd, msg, strlen(msg));
 
-    char buf[1024];
+    char buf[BUFFER_SIZE];
     while (1)
     {
         ssize_t n = read(fd, buf, sizeof(buf));
